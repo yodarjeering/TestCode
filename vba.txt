@@ -1,7 +1,4 @@
 
-依田倫太朗 <rintaroyoda@gmail.com>
-11月21日(火) 22:22 (5 日前)
-To yoda
 
 Sub CopyDataToTodaySheet()
     ' ソースとなるシートとターゲットとなるシートの宣言
