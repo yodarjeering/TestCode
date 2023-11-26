@@ -1,0 +1,49 @@
+
+依田倫太朗 <rintaroyoda@gmail.com>
+11月21日(火) 22:22 (5 日前)
+To yoda
+
+Sub CopyDataToTodaySheet()
+    ' ソースとなるシートとターゲットとなるシートの宣言
+    Dim sourceSheet As Worksheet
+    Dim targetSheet As Worksheet
+    ' コピー対象の列、日付を指定
+    Dim copyColumn As Integer
+    Dim dateColumn As Integer
+    ' コピー元の範囲を指定する変数
+    Dim copyRange As Range
+    ' コピー先の最終行を取得する変数
+    Dim lastTargetRow As Long
+
+    ' シートを指定
+    Set sourceSheet = ThisWorkbook.Sheets("名簿管理")
+    Set targetSheet = ThisWorkbook.Sheets("当日名簿")
+
+    ' コピー対象の列、日付を指定
+    copyColumn = 3 ' C列を指定
+    dateColumn = 1 ' A1セルの列を指定
+
+    ' コピー対象のデータがある範囲を取得
+    Set copyRange = sourceSheet.Columns(copyColumn).Find(What:=targetSheet.Cells(1, dateColumn + 1).Value, LookIn:=xlValues)
+
+    ' コピー先のシートにデータがあればクリア
+    If Not targetSheet.Cells(1, 1).Value = "" Then
+        targetSheet.Cells.Clear
+    End If
+
+    ' コピー元のデータが見つかればコピー
+    If Not copyRange Is Nothing Then
+        ' コピー元の列をコピー先のシートにコピー
+        copyRange.EntireColumn.Copy Destination:=targetSheet.Cells(1, 1)
+
+        ' コピー先の最終行を取得
+        lastTargetRow = targetSheet.Cells(targetSheet.Rows.Count, "A").End(xlUp).Row
+
+        ' コピー元のデータの行数に合わせてコピー先の行を削除
+        targetSheet.Rows(lastTargetRow + 1 & ":" & targetSheet.Rows.Count).Delete
+
+        MsgBox "データがコピーされました。"
+    Else
+        MsgBox "指定された日付が見つかりません。"
+    End If
+End Sub
